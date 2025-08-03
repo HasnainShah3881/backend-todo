@@ -1,16 +1,15 @@
 {
- "version": 2,
- "builds": [
-  {
-   "src": "app.js",
-   "use": "@vercel/node",
-   "config": { "includeFiles": ["app.js"] }
-  }
- ],
- "routes": [
+  "version": 2,
+  "builds": [
     {
-      "src": "/(Auth|Data|Users)(.*)",
-      "dest": "/api/server.js"
+      "src": "src/app.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "src/app.js"
     }
   ]
 }
