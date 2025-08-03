@@ -6,7 +6,9 @@ const Usersrouter = require("./router/users");
 const cors = require("cors");
 const { connectDB } = require("./config/database");
 const cookieParser = require("cookie-parser");
-const port = 3000;
+const serverless = require("serverless-http");
+
+// const port = 3000;
 app.use(
   cors({
     origin: ["https://todo-website-iota.vercel.app"],
@@ -27,6 +29,5 @@ connectDB()
     console.error("Error connecting to MongoDB");
   });
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
+module.exports = app;
+module.exports.handler = serverless(app);
