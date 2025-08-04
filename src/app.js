@@ -11,7 +11,7 @@ const serverless = require("serverless-http");
 // const port = 3000;
 app.use(
   cors({
-    origin: ["https://todo-website-iota.vercel.app"],
+    origin:"https://todo-website-iota.vercel.app",
     credentials: true,
   })
 );
