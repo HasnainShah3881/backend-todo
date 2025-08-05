@@ -28,6 +28,9 @@ const startApp = async () => {
     await connectDB();
     console.log("✅ Connected to MongoDB");
 
+     app.get("/", (req, res) => {
+      res.send("Hello from serverless!");
+    });
     // Register routes AFTER DB connection
     app.use("/Auth", Authrouter);
     app.use("/Data", Datarouter);
