@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 const validator = require("validator");
 const jwt = require("jsonwebtoken");
 const { User } = require("../models/userSchema");
-
+require("dotenv").config();
 Authrouter.post("/signup", async (req, res) => {
   try {
     const { firstname, lastname, email, password } = req.body;
