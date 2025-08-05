@@ -1,33 +1,52 @@
 const express = require("express");
-const app = express();
+const cors = require("cors");
+const cookieParser = require("cookie-parser");
+const serverless = require("serverless-http");
+const { connectDB } = require("./config/database");
+
 const Authrouter = require("./router/auth");
 const Datarouter = require("./router/data");
 const Usersrouter = require("./router/users");
-const cors = require("cors");
-const { connectDB } = require("./config/database");
-const cookieParser = require("cookie-parser");
-const serverless = require("serverless-http");
 
-// const port = 3000;
+const app = express();
+
 app.use(
   cors({
-    origin:"https://todo-website-iota.vercel.app",
+    origin: "https://todo-website-iota.vercel.app",
     credentials: true,
   })
 );
+
 app.use(cookieParser());
 app.use(express.json());
-app.use("/Auth", Authrouter);
-app.use("/Data", Datarouter);
-app.use("/Users", Usersrouter);
 
-connectDB()
-  .then(() => {
-    console.log("Connected to MongoDB");
-  })
-  .catch(() => {
-    console.error("Error connecting to MongoDB");
-  });
+// 👇 Wrap export inside a function to wait for DB connection
+let handler;
 
-module.exports = app;
-module.exports.handler = serverless(app);
+const startApp = async () => {
+  try {
+    await connectDB();
+    console.log("✅ Connected to MongoDB");
+
+    // Register routes AFTER DB connection
+    app.use("/Auth", Authrouter);
+    app.use("/Data", Datarouter);
+    app.use("/Users", Usersrouter);
+
+    handler = serverless(app);
+  } catch (error) {
+    console.error("❌ Error connecting to MongoDB:", error.message);
+  }
+};
+
+startApp();
+
+module.exports.handler = async (event, context) => {
+  if (!handler) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: "Server not initialized" }),
+    };
+  }
+  return handler(event, context);
+};
