@@ -6,12 +6,24 @@ const Usersrouter = require("./router/users");
 const cors = require("cors");
 const { connectDB } = require("./config/database");
 const cookieParser = require("cookie-parser");
-const serverless = require("serverless-http");
+const { locales } = require("validator/lib/isIBAN");
+// const serverless = require("serverless-http");
 
 const port = 3000;
+
+const allowedOrigins = [
+  "http://localhost:3000",
+  ""
+];
 app.use(
   cors({
-    origin: "https://todo-website-iota.vercel.app",
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("CORS not allowed from this origin: " + origin));
+      }
+    },
     credentials: true,
   })
 );
@@ -29,7 +41,6 @@ connectDB()
     console.error("Error connecting to MongoDB");
   });
 
-
-  app.listen(3000, ()=>{
-    console.log(`server is listening on ${port}`)
-  })
+app.listen(port, () => {
+  console.log(`server is listening on ${port}`);
+});
