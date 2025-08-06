@@ -6,9 +6,9 @@ const Usersrouter = require("./router/users");
 const cors = require("cors");
 const { connectDB } = require("./config/database");
 const cookieParser = require("cookie-parser");
+const serverless = require("serverless-http");
 
-
-// const port = 3000;
+const port = 3000;
 app.use(
   cors({
     origin: "https://todo-website-iota.vercel.app",
@@ -17,20 +17,6 @@ app.use(
 );
 app.use(cookieParser());
 app.use(express.json());
-
-
-
-
-app.use(async (req, res, next) => {
-  try {
-    await connectDB();
-    next();
-  } catch (err) {
-    console.error("DB connection error in middleware:", err);
-    res.status(500).json({ error: "Database connection failed" });
-  }
-});
-
 app.use("/Auth", Authrouter);
 app.use("/Data", Datarouter);
 app.use("/Users", Usersrouter);
@@ -43,4 +29,7 @@ connectDB()
     console.error("Error connecting to MongoDB");
   });
 
-module.exports = app;
+
+  app.listen(3000, ()=>{
+    console.log(`server is listening on ${port}`)
+  })
