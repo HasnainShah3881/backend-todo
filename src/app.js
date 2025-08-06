@@ -17,6 +17,20 @@ app.use(
 );
 app.use(cookieParser());
 app.use(express.json());
+
+
+
+
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (err) {
+    console.error("DB connection error in middleware:", err);
+    res.status(500).json({ error: "Database connection failed" });
+  }
+});
+
 app.use("/Auth", Authrouter);
 app.use("/Data", Datarouter);
 app.use("/Users", Usersrouter);
