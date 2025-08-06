@@ -6,7 +6,7 @@ const Usersrouter = require("./router/users");
 const cors = require("cors");
 const { connectDB } = require("./config/database");
 const cookieParser = require("cookie-parser");
-const serverless = require("serverless-http");
+
 
 // const port = 3000;
 app.use(
@@ -30,4 +30,3 @@ connectDB()
   });
 
 module.exports = app;
-module.exports.handler = serverless(app);
