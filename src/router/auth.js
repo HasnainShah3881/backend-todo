@@ -24,7 +24,7 @@ Authrouter.post("/signup", async (req, res) => {
 
     const passwordhashed = await bcrypt.hash(password, 10);
 
-    const user = await User({
+    const user = new User({
       firstname,
       lastname,
       email,
@@ -47,8 +47,10 @@ Authrouter.post("/signup", async (req, res) => {
 Authrouter.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
-
-    const user = await User.findOne({ email });
+    // if(!email || !password){
+    //   throw new Error("email and password is not define")
+    // }
+    const user = await User.findOne({ email }).select("+password");
     // console.log(user)
     if (!user) {
       throw new Error("user is not found");
