@@ -50,7 +50,7 @@ Authrouter.post("/login", async (req, res) => {
     // if(!email || !password){
     //   throw new Error("email and password is not define")
     // }
-    const user = await User.findOne({ email }).select("+password");
+    const user = await User.findOne({ email });
     // console.log(user)
     if (!user) {
       throw new Error("user is not found");
