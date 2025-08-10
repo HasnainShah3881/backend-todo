@@ -10,6 +10,8 @@ const { locales } = require("validator/lib/isIBAN");
 // const serverless = require("serverless-http");
 
 const port = 3000;
+app.use(cookieParser());
+app.use(express.json());
 
 const allowedOrigins = [
   "https://todo-website-iota.vercel.app"
@@ -26,19 +28,16 @@ app.use(
     credentials: true,
   })
 );
-app.use(cookieParser());
-app.use(express.json());
 app.use("/Auth", Authrouter);
 app.use("/Data", Datarouter);
 app.use("/Users", Usersrouter);
 
 connectDB()
-  .then(() => {
-    console.log("Connected to MongoDB");
-  })
-  .catch(() => {
-    console.error("Error connecting to MongoDB");
-  });
+ .then(()=>{
+    console.log("database connected successfully")
+  }).catch((err)=>{
+    console.log('database connection failed',err)
+})
 
 app.listen(port, () => {
   console.log(`server is listening on ${port}`);
