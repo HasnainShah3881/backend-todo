@@ -12,7 +12,6 @@ const { locales } = require("validator/lib/isIBAN");
 const port = 3000;
 
 const allowedOrigins = [
-  "http://localhost:3000",
   "https://todo-website-iota.vercel.app"
 ];
 app.use(
