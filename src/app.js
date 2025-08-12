@@ -14,7 +14,7 @@ app.use(cookieParser());
 app.use(express.json());
 
 const allowedOrigins = [
-  "https://todo-website-sigma-opal.vercel.app",
+  "https://todo-website-three.vercel.app",
   "http://localhost:3000"
 ];
 app.use(
