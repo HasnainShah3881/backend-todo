@@ -15,7 +15,7 @@ app.use(express.json());
 
 const allowedOrigins = [
   "https://todo-website-three.vercel.app",
-  "http://localhost:3000"
+
 ];
 app.use(
   cors({

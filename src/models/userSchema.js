@@ -38,6 +38,13 @@ const UserSchema = new Schema(
         }
       },
     },
+    bio:{
+      type: String,
+      minLength: 10,
+      maxLength: 300,
+      required: false,
+      default: "No bio provided."
+    }
   },
   {
     collection: "Users",

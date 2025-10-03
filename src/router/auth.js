@@ -12,7 +12,7 @@ Authrouter.post("/signup", async (req, res) => {
     if (!firstname || !lastname) {
       return res
         .status(400)
-        .json({ success: false, message: "First and last name are required." });
+        .json({ success: false, message: "First and last Name are required." });
     }
     if (!email || !validator.isEmail(email)) {
       return res
@@ -30,15 +30,14 @@ Authrouter.post("/signup", async (req, res) => {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res
-        .status(409)
-        .json({ success: false, message: "Email already exists." });
+        .json({ success: false, message: "Email already in use." });
     }
 
     const passwordhashed = await bcrypt.hash(password, 10);
 
     const user = new User({
       firstname,
-      lastname,
+      lastname, 
       email,
       password: passwordhashed,
     });
@@ -68,19 +67,17 @@ Authrouter.post("/login", async (req, res) => {
 
     if (!email || !password) {
       return res
-        .status(400)
-        .json({ message: "Email and password are required" });
+        .json({ success: false, message: "Email and password are required" });
     }
     const user = await User.findOne({ email });
-    // console.log(user)
+    console.log(user);
     if (!user) {
       return res
-        .status(404)
-        .json({ message: "User not found. Please sign up first." });
+        .json({ success: false, message: "User not found. Please sign up first." });
     }
     const ispasswordvalid = await bcrypt.compare(password, user.password);
     if (!ispasswordvalid) {
-      return res.status(401).json({ message: "Invalid credentials" });
+      return res.json({ success: false, message: "invalid password" });
     }
     const token = await jwt.sign({ id: user._id }, process.env.SECRET_KEY, {
       expiresIn: "1d",
@@ -94,14 +91,17 @@ Authrouter.post("/login", async (req, res) => {
     });
 
     res.status(200).json({
+      success: true,
       message: "Login successful",
       user: {
         id: user._id,
         email: user.email,
+        firstName: user.firstname,
+        lastName: user.lastname,
+        bio: user.bio
       },
     });
   } catch (error) {
-    console.error("Login error:", error);
     res.status(500).json({ message: "Error logging in: " + error.message });
   }
 });
@@ -117,7 +117,6 @@ Authrouter.post("/logout", async (req, res) => {
 
     res.status(200).json({ message: "User logged out successfully" });
   } catch (error) {
-    console.error("Logout error:", error);
     res.status(500).json({ message: "Error logging out" });
   }
 });
