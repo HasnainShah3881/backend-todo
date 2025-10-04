@@ -14,7 +14,7 @@ app.use(cookieParser());
 app.use(express.json());
 
 const allowedOrigins = [
-  "https://todo-website-three.vercel.app",
+  "https://todo-website-theta.vercel.app",
 
 ];
 app.use(
