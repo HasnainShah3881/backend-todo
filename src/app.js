@@ -15,7 +15,7 @@ app.use(express.json());
 
 const allowedOrigins = [
   "https://todo-website-theta.vercel.app",
-
+  "http://localhost:5173"
 ];
 app.use(
   cors({
