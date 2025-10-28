@@ -13,10 +13,10 @@ const port = 3000;
 app.use(cookieParser());
 app.use(express.json());
 
-const allowedOrigins = [
-  "https://todo-website-theta.vercel.app",
-  "http://localhost:5173"
-];
+  const allowedOrigins = [
+    "https://todo-website-theta.vercel.app",
+    "http://localhost:5173"
+  ];
 app.use(
   cors({
     origin: function (origin, callback) {
@@ -29,16 +29,16 @@ app.use(
     credentials: true,
   })
 );
-app.use("/Auth", Authrouter);
-app.use("/Data", Datarouter);
-app.use("/Users", Usersrouter);
-
 connectDB()
  .then(()=>{
     console.log("database connected successfully")
   }).catch((err)=>{
     console.log('database connection failed',err)
 })
+app.use("/Auth", Authrouter);
+app.use("/Data", Datarouter);
+app.use("/Users", Usersrouter);
+
 
 app.listen(port, () => {
   console.log(`server is listening on ${port}`);
